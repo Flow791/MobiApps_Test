@@ -12,12 +12,11 @@ import CoreData
 
 class PokemonManager {
     
-    private let url = URL(string: "https://pokeapi.co/api/v2/pokemon")!
     private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    func loadPokemon(completion: @escaping (_ data:[Pokemon],_ error:Error?)->()) {
+    func loadPokemon(url:URL, completion: @escaping (_ data:[Pokemon],_ error:Error?)->()) {
         
-        let task = URLSession.shared.dataTask(with: self.url) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             guard error == nil else {
                 completion(self.getPokemonsSaved(),error)

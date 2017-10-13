@@ -16,15 +16,19 @@ class ListePokemonController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        pokemonManager.loadPokemon(completion: receivePokemon)
+        let url:URL = URL(string: "https://pokeapi.co/api/v2/pokemon")!
+        pokemonManager.loadPokemon(url: url,completion: receivePokemon)
     }
     
     private func receivePokemon(_ pokemons: [Pokemon], error:Error?) {
         
         self.pokemons = pokemons
         
+        for pokemon in pokemons {
+            print("NOM : \(pokemon.name!)")
+        }
+        
     }
-    
 
     /*
     // MARK: - Navigation
