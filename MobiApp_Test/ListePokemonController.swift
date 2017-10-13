@@ -22,12 +22,22 @@ class ListePokemonController: UITableViewController {
     
     private func receivePokemon(_ pokemons: [Pokemon], error:Error?) {
         
-        self.pokemons = pokemons
-        
-        for pokemon in pokemons {
-            print("NOM : \(pokemon.name!)")
+        DispatchQueue.main.async {
+            self.pokemons = pokemons
+            
+            self.tableView.reloadData()
         }
-        
     }
-
+    
+    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return pokemons.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "pokemonCell")
+     
+        cell?.textLabel?.text = pokemons[indexPath.row].name!
+        
+        return cell!
+    }
 }
