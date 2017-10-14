@@ -17,7 +17,7 @@ class ListePokemonController: UITableViewController {
         super.viewDidLoad()
 
         let url:URL = URL(string: "https://pokeapi.co/api/v2/pokemon")!
-        pokemonManager.loadPokemon(url: url,completion: receivePokemon)
+        pokemonManager.loadPokemonList(url: url,completion: receivePokemon)
     }
     
     private func receivePokemon(_ pokemons: [Pokemon], error:Error?) {
@@ -39,5 +39,15 @@ class ListePokemonController: UITableViewController {
         cell?.textLabel?.text = pokemons[indexPath.row].name!
         
         return cell!
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "pokemonInfoSegue" {
+            
+            let destination = segue.destination as! PokemonInfoViewController
+            destination.pokemon = pokemons[self.tableView.indexPathForSelectedRow!.row]
+            
+        }
     }
 }
