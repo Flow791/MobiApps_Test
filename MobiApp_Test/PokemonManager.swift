@@ -56,7 +56,7 @@ class PokemonManager {
         }
         
         guard mode == Mode.Multi else {
-            return getPokemonFrom(parsedData: data)
+            return getPokemonFrom(parsedData: result)
         }
         return getPokemonListFrom(parsedData : result)
     }
@@ -87,18 +87,18 @@ class PokemonManager {
         return Pokemon()
     }
     
-    private func getPokemonFrom(parsedData: [String: Any]) -> Pokemon {
+    private func getPokemonFrom(parsedData: [String: Any]) -> [Pokemon] {
         if let abilitiesData = parsedData["abilities"] as? [[String:Any]],
             let typesData = parsedData["types"] as? [[String:Any]],
             let statsData = parsedData["stats"] as? [[String:Any]],
             let formsData = parsedData["forms"] as? [[String:Any]] {
             
-            let pokemonName = formsData[0]["name"]
-            //let pokemon = func pokemonSearch
+            let pokemonName = formsData[0]["name"] as! String
+            let pokemon:Pokemon = searchPokemon(name: pokemonName)
             
-            var statsList:[Stats] = [Stats]()
-            var typesList:[Types] = [Types]()
-            var abilityList:[Abilities] = [Abilities]()
+            //var statsList:[Stats] = [Stats]()
+            //var typesList:[Types] = [Types]()
+            //var abilityList:[Abilities] = [Abilities]()
             
             for abilitieData in abilitiesData {
                 let abilitieArray = abilitieData["ability"] as! [String:String]
@@ -107,7 +107,7 @@ class PokemonManager {
                 let ability = Abilities(context: context)
                 ability.name = abilityName!
                 
-                abilityList.append(ability)
+                ability.pokemon = pokemon
             }
             
             for typeData in typesData {
@@ -118,7 +118,7 @@ class PokemonManager {
                 let type = Types(context: context)
                 type.name = typeName!
                 
-                typesList.append(type)
+                type.pokemon = pokemon
             }
             
             for statData in statsData {
@@ -130,15 +130,28 @@ class PokemonManager {
                 stat.stat = statName!
                 stat.base_stat = baseStat
                 
-                statsList.append(stat)
+                stat.pokemon = pokemon
             }
             
-            //pokemon = constructPokemonPokemon(stats: stat, url: url)
-            //return pokemon
+            savePokemons()
+            return [pokemon]
         }
-        return Pokemon()
+        return [Pokemon]()
     }
     
+    private func searchPokemon(name:String) -> Pokemon {
+        
+        var pokemon:Pokemon = Pokemon()
+        let pokemons = getPokemonsSaved()
+     
+        for result in pokemons {
+            if result.name == name {
+                pokemon = result
+            }
+        }
+        return pokemon
+    }
+
     private func createPokemon(name:String, url:String) -> Pokemon {
         
         let pokemon = Pokemon(context:context)

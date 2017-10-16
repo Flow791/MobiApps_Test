@@ -2,25 +2,28 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13240" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Abilities" representedClassName="Abilities" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="pokemon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pokemon" inverseName="abilities" inverseEntity="Pokemon" syncable="YES"/>
     </entity>
     <entity name="Pokemon" representedClassName="Pokemon" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="url" attributeType="String" syncable="YES"/>
-        <relationship name="abilities" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Abilities" syncable="YES"/>
-        <relationship name="stats" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stats" syncable="YES"/>
-        <relationship name="types" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Types" syncable="YES"/>
+        <relationship name="abilities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Abilities" inverseName="pokemon" inverseEntity="Abilities" syncable="YES"/>
+        <relationship name="stats" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stats" inverseName="pokemon" inverseEntity="Stats" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Types" inverseName="pokemon" inverseEntity="Types" syncable="YES"/>
     </entity>
     <entity name="Stats" representedClassName="Stats" syncable="YES" codeGenerationType="class">
         <attribute name="base_stat" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="stat" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="pokemon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pokemon" inverseName="stats" inverseEntity="Pokemon" syncable="YES"/>
     </entity>
     <entity name="Types" representedClassName="Types" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="pokemon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pokemon" inverseName="types" inverseEntity="Pokemon" syncable="YES"/>
     </entity>
     <elements>
         <element name="Pokemon" positionX="-162" positionY="-315" width="128" height="118"/>
-        <element name="Stats" positionX="79" positionY="-108" width="128" height="75"/>
-        <element name="Abilities" positionX="-99" positionY="-114" width="128" height="60"/>
-        <element name="Types" positionX="-290" positionY="-114" width="128" height="60"/>
+        <element name="Stats" positionX="79" positionY="-108" width="128" height="88"/>
+        <element name="Abilities" positionX="-99" positionY="-114" width="128" height="73"/>
+        <element name="Types" positionX="-290" positionY="-114" width="128" height="73"/>
     </elements>
 </model>

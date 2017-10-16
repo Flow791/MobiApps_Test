@@ -22,7 +22,10 @@ class PokemonInfoViewController: UIViewController {
     
     private func receivePokemon(_ pokemons: [Pokemon], error:Error?) {
         
-        print(pokemons)
+        for pokemon in pokemons {
+            print(pokemon.abilities!)
+            print(pokemon.name!)
+        }
     }
     
 }
