@@ -9,7 +9,7 @@
 import UIKit
 
 class PokemonInfoViewController: UIViewController {
-
+    
     @IBOutlet weak var pokemonName: UILabel!
     @IBOutlet weak var pokemonAbilities: UILabel!
     @IBOutlet weak var pokemonTypes: UILabel!
@@ -18,11 +18,14 @@ class PokemonInfoViewController: UIViewController {
     
     private let pokemonManager:PokemonManager = PokemonManager()
     var pokemon:Pokemon?
+    var sharedText:String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         activityIndicator.isHidden = false
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareAction))
         
         let url:URL = URL(string: pokemon!.url!)!
         pokemonManager.loadPokemon(url: url,completion: receivePokemon)
@@ -48,6 +51,12 @@ class PokemonInfoViewController: UIViewController {
                 }
             }
             self.activityIndicator.isHidden = true
+            self.sharedText = "Pokemon: \(self.pokemonName.text!), \(self.pokemonTypes.text!), \(self.pokemonAbilities.text!), \(self.pokemonStats.text!)"
         }
+    }
+    
+    @objc private func shareAction() {
+        let vc = UIActivityViewController(activityItems: [sharedText], applicationActivities: nil)
+        present(vc, animated: true)
     }
 }

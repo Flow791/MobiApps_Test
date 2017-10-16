@@ -41,7 +41,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stats :" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gYQ-am-Kgq">
-                                <rect key="frame" x="151.5" y="373.5" width="72" height="20"/>
+                                <rect key="frame" x="151.5" y="323.5" width="72" height="20"/>
                                 <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -55,9 +55,9 @@
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yNr-08-3eU" secondAttribute="trailing" constant="20" id="0qZ-9t-N1b"/>
                             <constraint firstItem="NNG-7N-y4n" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3sv-Rx-3er"/>
+                            <constraint firstItem="gYQ-am-Kgq" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="BKy-cy-2qw"/>
                             <constraint firstItem="gYQ-am-Kgq" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Cl9-9e-rLr"/>
                             <constraint firstItem="kMG-uS-KfG" firstAttribute="top" secondItem="yNr-08-3eU" secondAttribute="bottom" constant="50" id="HHw-6O-WQ0"/>
-                            <constraint firstItem="gYQ-am-Kgq" firstAttribute="top" secondItem="yNr-08-3eU" secondAttribute="bottom" constant="240" id="L7D-dY-MLv"/>
                             <constraint firstItem="NNG-7N-y4n" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="QJ8-FO-DnA"/>
                             <constraint firstItem="Hg0-w1-x3c" firstAttribute="top" secondItem="yNr-08-3eU" secondAttribute="bottom" constant="50" id="bKb-NB-GAo"/>
                             <constraint firstItem="kMG-uS-KfG" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="25" id="cJ2-hW-Azo"/>
