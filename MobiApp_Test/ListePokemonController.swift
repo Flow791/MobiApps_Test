@@ -17,17 +17,37 @@ class ListePokemonController: UITableViewController {
         super.viewDidLoad()
 
         let url:URL = URL(string: "https://pokeapi.co/api/v2/pokemon")!
-        pokemonManager.loadPokemon(url: url,completion: receivePokemon)
+        pokemonManager.loadPokemonList(url: url,completion: receivePokemon)
     }
     
     private func receivePokemon(_ pokemons: [Pokemon], error:Error?) {
         
-        self.pokemons = pokemons
-        
-        for pokemon in pokemons {
-            print("NOM : \(pokemon.name!)")
+        DispatchQueue.main.async {
+            self.pokemons = pokemons
+            
+            self.tableView.reloadData()
         }
-        
     }
-
+    
+    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return pokemons.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "pokemonCell")
+     
+        cell?.textLabel?.text = pokemons[indexPath.row].name!
+        
+        return cell!
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "pokemonInfoSegue" {
+            
+            let destination = segue.destination as! PokemonInfoViewController
+            destination.pokemon = pokemons[self.tableView.indexPathForSelectedRow!.row]
+            
+        }
+    }
 }

@@ -10,11 +10,16 @@ import UIKit
 import Foundation
 import CoreData
 
+enum Mode {
+    case Multi
+    case Single
+}
+
 class PokemonManager {
     
     private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    func loadPokemon(url:URL, completion: @escaping (_ data:[Pokemon],_ error:Error?)->()) {
+    func loadPokemonList(url:URL, completion: @escaping (_ data:[Pokemon],_ error:Error?)->()) {
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
@@ -24,18 +29,35 @@ class PokemonManager {
             }
             
             self.deleteAllPokemons()
-            completion(self.parse(data: data),error)
+            completion(self.parse(data: data, mode:Mode.Multi),error)
         }
         task.resume()
     }
     
-    private func parse(data: Data?) -> [Pokemon] {
+    func loadPokemon(url:URL, completion: @escaping (_ data:[Pokemon],_ error:Error?)->()) {
+        
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            
+            guard error == nil else {
+                completion([Pokemon](),error)
+                return
+            }
+            
+            completion(self.parse(data: data, mode:Mode.Single),error)
+        }
+        task.resume()
+    }
+    
+    private func parse(data: Data?, mode:Mode) -> [Pokemon] {
         guard let data = data,
             let serializedJson = try? JSONSerialization.jsonObject(with: data, options: []),
             let result = serializedJson as? [String: Any] else {
                 return [Pokemon]()
         }
         
+        guard mode == Mode.Multi else {
+            return getPokemonFrom(parsedData: result)
+        }
         return getPokemonListFrom(parsedData : result)
     }
     
@@ -46,7 +68,7 @@ class PokemonManager {
         let results = parsedData["results"] as! [[String:String]]
         
         for data in results {
-            pokemonList.append(getPokemonFrom(parsedData: data))
+            pokemonList.append(getPokemonsFrom(parsedData: data))
         }
         
         savePokemons()
@@ -54,7 +76,7 @@ class PokemonManager {
         return pokemonList
     }
     
-    private func getPokemonFrom(parsedData: [String: Any]) -> Pokemon {
+    private func getPokemonsFrom(parsedData: [String: Any]) -> Pokemon {
         if let name = parsedData["name"] as? String,
             let url = parsedData["url"] as? String{
             
@@ -65,6 +87,67 @@ class PokemonManager {
         return Pokemon()
     }
     
+    private func getPokemonFrom(parsedData: [String: Any]) -> [Pokemon] {
+        if let abilitiesData = parsedData["abilities"] as? [[String:Any]],
+            let typesData = parsedData["types"] as? [[String:Any]],
+            let statsData = parsedData["stats"] as? [[String:Any]],
+            let formsData = parsedData["forms"] as? [[String:Any]] {
+            
+            let pokemonName = formsData[0]["name"] as! String
+            let pokemon:Pokemon = searchPokemon(name: pokemonName)
+            
+            for abilitieData in abilitiesData {
+                let abilitieArray = abilitieData["ability"] as! [String:String]
+                let abilityName = abilitieArray["name"]
+                
+                let ability = Abilities(context: context)
+                ability.name = abilityName!
+                
+                ability.pokemon = pokemon
+            }
+            
+            for typeData in typesData {
+                
+                let typeArray = typeData["type"] as! [String:String]
+                let typeName = typeArray["name"]
+                
+                let type = Types(context: context)
+                type.name = typeName!
+                
+                type.pokemon = pokemon
+            }
+            
+            for statData in statsData {
+                let baseStat = statData["base_stat"] as! Int16
+                let statArray = statData["stat"] as! [String:String]
+                let statName = statArray["name"]
+                
+                let stat = Stats(context:context)
+                stat.stat = statName!
+                stat.base_stat = baseStat
+                
+                stat.pokemon = pokemon
+            }
+            
+            savePokemons()
+            return [pokemon]
+        }
+        return [Pokemon]()
+    }
+    
+    private func searchPokemon(name:String) -> Pokemon {
+        
+        var pokemon:Pokemon = Pokemon()
+        let pokemons = getPokemonsSaved()
+     
+        for result in pokemons {
+            if result.name == name {
+                pokemon = result
+            }
+        }
+        return pokemon
+    }
+
     private func createPokemon(name:String, url:String) -> Pokemon {
         
         let pokemon = Pokemon(context:context)
