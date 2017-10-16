@@ -34,16 +34,16 @@ class PokemonManager {
         task.resume()
     }
     
-    func loadPokemon(url:URL, completion: @escaping (_ data:[Pokemon],_ error:Error?)->()) {
+    func loadPokemon(url:URL) {
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             guard error == nil else {
-                completion([Pokemon](),error)
+                print(error!)
                 return
             }
             
-            completion(self.parse(data: data, mode:Mode.Single),error)
+            self.parse(data: data, mode:Mode.Single)
         }
         task.resume()
     }
