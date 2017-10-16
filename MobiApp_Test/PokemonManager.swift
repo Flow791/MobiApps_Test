@@ -96,10 +96,6 @@ class PokemonManager {
             let pokemonName = formsData[0]["name"] as! String
             let pokemon:Pokemon = searchPokemon(name: pokemonName)
             
-            //var statsList:[Stats] = [Stats]()
-            //var typesList:[Types] = [Types]()
-            //var abilityList:[Abilities] = [Abilities]()
-            
             for abilitieData in abilitiesData {
                 let abilitieArray = abilitieData["ability"] as! [String:String]
                 let abilityName = abilitieArray["name"]
