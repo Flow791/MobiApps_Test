@@ -27,32 +27,28 @@ class PokemonInfoViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareAction))
         
-        let url:URL = URL(string: pokemon!.url!)!
-        pokemonManager.loadPokemon(url: url,completion: receivePokemon)
+        initView(pokemon!)
     }
     
-    private func receivePokemon(_ pokemons: [Pokemon], error:Error?) {
+    private func initView(_ pokemon: Pokemon) {
         
-        DispatchQueue.main.async {
-            for pokemon in pokemons {
-                self.pokemonStats.text = "Stats :\n\n"
-                self.pokemonTypes.text = "Types :\n\n"
-                self.pokemonAbilities.text = "Abilities :\n\n"
-                
-                self.pokemonName.text = pokemon.name!
-                for ability in pokemon.abilities! {
-                    self.pokemonAbilities.text?.append("\(String(describing: (ability as! Abilities).name!)) \n")
-                }
-                for type in pokemon.types! {
-                    self.pokemonTypes.text?.append("\(String(describing: (type as! Types).name!)) \n")
-                }
-                for stat in pokemon.stats! {
-                    self.pokemonStats.text?.append("\(String(describing: (stat as! Stats).stat!)) \n")
-                }
-            }
-            self.activityIndicator.isHidden = true
-            self.sharedText = "Pokemon: \(self.pokemonName.text!), \(self.pokemonTypes.text!), \(self.pokemonAbilities.text!), \(self.pokemonStats.text!)"
+        self.pokemonStats.text = "Stats :\n\n"
+        self.pokemonTypes.text = "Types :\n\n"
+        self.pokemonAbilities.text = "Abilities :\n\n"
+        
+        self.pokemonName.text = pokemon.name!
+        for ability in pokemon.abilities! {
+            self.pokemonAbilities.text?.append("\(String(describing: (ability as! Abilities).name!)) \n")
         }
+        for type in pokemon.types! {
+            self.pokemonTypes.text?.append("\(String(describing: (type as! Types).name!)) \n")
+        }
+        for stat in pokemon.stats! {
+            self.pokemonStats.text?.append("\(String(describing: (stat as! Stats).stat!)) \n")
+        }
+        self.activityIndicator.isHidden = true
+        self.sharedText = "Pokemon: \(self.pokemonName.text!), \(self.pokemonTypes.text!), \(self.pokemonAbilities.text!), \(self.pokemonStats.text!)"
+        
     }
     
     @objc private func shareAction() {
