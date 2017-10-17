@@ -23,6 +23,8 @@ class PokemonInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.accessibilityIdentifier = "pokemonView"
+        
         activityIndicator.isHidden = false
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareAction))
