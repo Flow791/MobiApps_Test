@@ -24,12 +24,6 @@ class ListePokemonController: UITableViewController {
         
         DispatchQueue.main.async {
             self.pokemons = pokemons
-            
-            for pokemon in pokemons {
-                let pokemonUrl = URL(string: pokemon.url!)
-                self.pokemonManager.loadPokemon(url: pokemonUrl!)
-            }
-            
             self.tableView.reloadData()
         }
     }

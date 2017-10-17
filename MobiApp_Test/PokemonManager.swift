@@ -34,7 +34,7 @@ class PokemonManager {
         task.resume()
     }
     
-    func loadPokemon(url:URL) {
+    private func loadPokemon(url:URL) {
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
@@ -154,6 +154,9 @@ class PokemonManager {
         
         pokemon.name = name
         pokemon.url = url
+        
+        let pokemonUrl = URL(string: url)!
+        loadPokemon(url: pokemonUrl)
         
         return pokemon
     }
